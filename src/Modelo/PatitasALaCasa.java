@@ -99,8 +99,27 @@ public class PatitasALaCasa {
             fLlegada= fechaActual;
             
             masc = new Mascota(nom, id, fLlegada,esp,raza,edad);
-            mascotas.add(masc);
             
+            
+            oe.mostraDatos("Historial Clinico del animal");
+            
+            /*this.id = id;
+        this.vacunas = vacunas;
+        this.enfermedades = enfermedades;
+        this.VisitasMedico = VisitasMedico;
+        this.DesAdicional = DesAdicional;*/
+             
+             String vacunas = oe.pedirString("Vacunas de la mascota\n");
+             String enfermedades = oe.pedirString("Enfermedades de la mascota");
+             String descAdd = oe.pedirString("Descripcion adicional acerda del estado de la mascota");
+             LocalDate ultVis = fechaActual;
+             int visMed = 0;
+            
+            HistoriaClinica mascHC = new HistoriaClinica(id, vacunas, enfermedades, visMed, descAdd,ultVis);
+            masc.setHisClinica(mascHC);
+            
+            
+            mascotas.add(masc);
             res = oe.pedirEntero("Crear Mascota \n 1. Ingresar nueva mascota \n Otro numero para salir");
         }
         

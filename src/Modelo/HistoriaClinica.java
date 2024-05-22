@@ -1,21 +1,22 @@
  package Modelo;
  
-import java.util.Date;
+import java.time.LocalDate;
 
 public class HistoriaClinica {
     private int id;
     private String vacunas;
     private String enfermedades;
     private int VisitasMedico;
-    private Date ultimaVisita;
+    private LocalDate ultimaVisita;
     private String DesAdicional; 
 
-    public HistoriaClinica(int id, String vacunas, String enfermedades, int VisitasMedico, String DesAdicional) {
+    public HistoriaClinica(int id, String vacunas, String enfermedades, int VisitasMedico, String DesAdicional,LocalDate ultimaRevision) {
         this.id = id;
         this.vacunas = vacunas;
         this.enfermedades = enfermedades;
         this.VisitasMedico = VisitasMedico;
         this.DesAdicional = DesAdicional;
+        this.ultimaVisita=ultimaRevision;
     }
 
     public int getId() {
@@ -58,11 +59,11 @@ public class HistoriaClinica {
         this.DesAdicional = DesAdicional;
     }
 
-    public Date getUltimaVisita() {
+    public LocalDate getUltimaVisita() {
         return ultimaVisita;
     }
 
-    public void setUltimaVisita(Date ultimaVisita) {
+    public void setUltimaVisita(LocalDate ultimaVisita) {
         this.ultimaVisita = ultimaVisita;
     }
     
