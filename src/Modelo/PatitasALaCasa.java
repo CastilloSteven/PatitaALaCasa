@@ -1,6 +1,9 @@
 package Modelo;
 
 import Vista.InOut;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -56,15 +59,17 @@ public class PatitasALaCasa {
             
             admin = new Administrador(ced,nom,ape,edad,correo,num);
             administrador.add(admin);
+            
+            res = oe.pedirEntero("Crear Administrador \n 1. Ingresar nuevo administrador \n Otro numero para salir");
         }
     }
     
     public void crearMascota(){
         int id, edad, res;
         String nom,raza,esp;
-        Date fLlegada;
+        LocalDate fLlegada;
         Mascota masc;
-        res=oe.pedirEntero("Crear Administrador \n 1. Ingresar nuevo administrador \n Otro numero para salir");
+        res=oe.pedirEntero("Crear Mascota \n 1. Ingresar nueva mascota \n Otro numero para salir");
         while(res==1){
             do{
                 nom=oe.pedirString("Ingrese el nombre de la mascota");
@@ -87,12 +92,16 @@ public class PatitasALaCasa {
                 edad=oe.pedirEntero("Ingrese la edad de la mascota");
             }while(!v.evaluarEdadM(edad));
             
-            do{
-                fLlegada=oe.pedirDate("Ingrese la fecha en la que ingresa la mascota a la fundacion");
-            }while(!v.evaluarFecha(fLlegada));
+            //DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate fechaActual = LocalDate.now();
+            oe.mostraDatos("fecha de ingreso:" + fechaActual);
+
+            fLlegada= fechaActual;
             
             masc = new Mascota(nom, id, fLlegada,esp,raza,edad);
             mascotas.add(masc);
+            
+            res = oe.pedirEntero("Crear Mascota \n 1. Ingresar nueva mascota \n Otro numero para salir");
         }
         
     }
@@ -134,6 +143,8 @@ public class PatitasALaCasa {
         
             adop = new Adoptante(ced,nom,ape,edad,correo,num,salario);
             adoptante.add(adop);
+            
+            res=oe.pedirEntero("Crear Adoptante \n 1. Ingresar nuevo adoptante \n Otro numero para salir");
         }
     }
 }

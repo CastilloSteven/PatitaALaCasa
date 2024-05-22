@@ -20,8 +20,10 @@ public class InOut {
         JOptionPane.showMessageDialog(null, m);
     }
 
-    public Date pedirDate(String m){
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String pedirDate(String m){
+        return JOptionPane.showInputDialog(m);
+        
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     
