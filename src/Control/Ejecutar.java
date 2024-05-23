@@ -67,7 +67,9 @@ public class Ejecutar {
             break;
             
             case 6:
-                
+                if(adopCreado==false && testCompl==false){
+                    patitas.adoptarMascota();
+                }
             break;
             
             case 7:
