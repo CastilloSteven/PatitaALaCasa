@@ -102,12 +102,6 @@ public class PatitasALaCasa {
             
             
             oe.mostraDatos("Historial Clinico del animal");
-            
-            /*this.id = id;
-        this.vacunas = vacunas;
-        this.enfermedades = enfermedades;
-        this.VisitasMedico = VisitasMedico;
-        this.DesAdicional = DesAdicional;*/
              
              String vacunas = oe.pedirString("Vacunas de la mascota\n");
              String enfermedades = oe.pedirString("Enfermedades de la mascota");
@@ -149,7 +143,7 @@ public class PatitasALaCasa {
             }while(!v.evaluarEdadC(edad) && !v.evaluarSoloNumeros(edad));
             
             do{
-                num=oe.pedirEntero("Ingrese el numero del adoptante \n +57 3");
+                num=oe.pedirEntero("Ingrese el numero del adoptante \n +57");
             }while(!v.evaluarTelefono(num) && !v.evaluarSoloNumeros(num));
             
             do{
@@ -166,4 +160,76 @@ public class PatitasALaCasa {
             res=oe.pedirEntero("Crear Adoptante \n 1. Ingresar nuevo adoptante \n Otro numero para salir");
         }
     }
+    
+    
+    
+    public void realizarRevision(int id){
+        for (Mascota mascota : mascotas) {
+            if(mascota.getId()==id){
+                oe.mostraDatos("Revisión a "+ mascota.getNombre());
+                String m ="Historial Clinico\n";
+                m+="Vacunas:\n"+mascota.getHisClinica().getVacunas();
+                m+="Enfermedades:\n"+mascota.getHisClinica().getEnfermedades();
+                m+="Descricion Adicional:\n"+mascota.getHisClinica().getDesAdicional();
+                m+="total visitas:\n"+mascota.getHisClinica().getVisitasMedico();
+                m+="Ultima Visita y revision:\n"+mascota.getHisClinica().getUltimaVisita();
+                oe.mostraDatos(m);
+                
+                int opc;
+                do{
+                    String n = "Informacion que va a editar\n";
+                    n+="1. Vacunas\n";
+                    n+="2. Enfermedades\n";
+                    n+="3. Descripcion Adicional\n";
+                    n+="4. terminar revision\n";
+                    opc = oe.pedirEntero("Informacion que va a editar");
+                    int opc2=0;
+                    String aux="";
+                    switch(opc){
+                        case 1:                    
+                            aux = oe.pedirString("Nueva vacuna");
+                            mascota.getHisClinica().setVacunas(mascota.getHisClinica().getVacunas()+"\n"+aux);
+                            
+                        break;
+                        case 2:
+                            aux = oe.pedirString("Agregar nueva Enfermedad");
+                            mascota.getHisClinica().setEnfermedades(mascota.getHisClinica().getEnfermedades()+"\n"+aux);
+                        break;
+                        case 3:
+                            aux = oe.pedirDate("Nueva descripcion adicional");
+                            mascota.getHisClinica().setDesAdicional(aux);
+                            
+                        break;
+                        case 4:
+                            oe.mostraDatos("Saliendo");
+                        break;
+                    }
+                }while(opc!=4);
+             LocalDate fechaActual = LocalDate.now();
+             mascota.getHisClinica().setUltimaVisita(fechaActual);
+             mascota.getHisClinica().setVisitasMedico(mascota.getHisClinica().getVisitasMedico()+1);
+            oe.mostraDatos("Revisión a "+ mascota.getNombre());
+                String m2 ="Nuevo Historial Clinico\n";
+                m2+="Vacunas:\n"+mascota.getHisClinica().getVacunas();
+                m2+="Enfermedades:\n"+mascota.getHisClinica().getEnfermedades();
+                m2+="Descricion Adicional:\n"+mascota.getHisClinica().getDesAdicional();
+                m2+="total visitas:\n"+mascota.getHisClinica().getVisitasMedico();
+                m2+="Ultima Visita y revision:\n"+mascota.getHisClinica().getUltimaVisita();
+                oe.mostraDatos(m2);
+            }else{
+                oe.mostraDatos("El id es incorrecto");
+            }
+            
+        }
+    }
+    public void verMasc(){
+        
+        oe.mostraDatos("Las mascotas en lista de adopcion son");
+        int i=1;
+        for (Mascota masc:mascotas) {
+            oe.mostraDatos("Mascota "+ i++);
+            oe.mostraDatos("Nombre: "+masc.getNombre()+"\n Especie: "+masc.getEspecie()+"\n Raza: "+masc.getRaza()+"\n Edad: "+masc.getEdad()+"\n ID: "+masc.getId());
+        }
+    }
+        
 }

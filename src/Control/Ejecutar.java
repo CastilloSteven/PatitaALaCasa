@@ -2,14 +2,17 @@ package Control;
 
 import Vista.InOut;
 import Modelo.PatitasALaCasa;
+import Modelo.Test;
 
 public class Ejecutar {
 // atributos
     static InOut vista=new InOut();
     static PatitasALaCasa patitas;
+    static Test test;
     
     public static void main(String[] args){
         patitas = new PatitasALaCasa();
+        test = new Test();
         devolverMenu();
     }
     
@@ -27,7 +30,7 @@ public class Ejecutar {
         return vista.pedirEntero(menu);
     }    
    
-    static boolean funCreada=true, mascCreada=true, adopCreado=true;
+    static boolean funCreada=true, mascCreada=true, adopCreado=true, testCompl=true;
     
     public static void ejecutarMenu(int accion){
         switch(accion){
@@ -44,18 +47,23 @@ public class Ejecutar {
             break;
             
             case 3:
-                if(mascCreada==false){
+                if(funCreada==false && mascCreada==false){
                 patitas.crearAdoptante();
                 }
                 adopCreado = false;
             break;
             
             case 4:
-                
+                if(funCreada==false && mascCreada==false && adopCreado==false){
+                    test.realizarTest();
+                }
+                testCompl = false;
             break;
             
             case 5:
-                
+                if(funCreada==false && mascCreada==false){
+                    patitas.verMasc();
+                }
             break;
             
             case 6:
@@ -63,7 +71,11 @@ public class Ejecutar {
             break;
             
             case 7:
-                
+                if(mascCreada==false){
+                   int id=vista.pedirEntero("Ingrese el id de la mascota");
+                    patitas.realizarRevision(id);
+                }
+                adopCreado = false;
             break;
         }
     }

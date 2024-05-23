@@ -9,7 +9,8 @@ public class Validaciones {
     InOut oe = new InOut();
     
     public boolean evaluarCedula(int cedula) {
-        return cedula > 1 && cedula <= 999999999;
+        String cedulaStr = String.valueOf(cedula);
+        return cedula > 1 && cedula < 2000000000 && cedulaStr.length() == 10;
     }
     
     public boolean evaluarSoloNumeros(int numero){
@@ -42,7 +43,7 @@ public class Validaciones {
     public boolean evaluarId(int id){
         return id > 0 && id<= 1000000000;
     }
-    public boolean evaluarSalario(double salario){
+    public boolean evaluarSalario(int salario){
         return salario > 1200000;
     }
     public boolean evaluarTelefono(double telefono){
@@ -65,22 +66,10 @@ public class Validaciones {
    }
    
     public boolean evaluarIdPersona(ArrayList<Integer> idsExistentes, int nuevoId){
-        boolean valido = true;
-        for (int i=0; i<idsExistentes.size();i++){
-            if(nuevoId == idsExistentes.get(i)){
-                valido = false;
-            }
-        }
-       return valido;
-   }
-    
+        return !idsExistentes.contains(nuevoId);
+    }
+
     public boolean evaluarIdMascotas(ArrayList<Integer> idsExistentes, int nuevoId){
-        boolean valido = true;
-        for (int i=0; i<idsExistentes.size();i++){
-            if(nuevoId == idsExistentes.get(i)){
-                valido = false;
-            }
-        }
-       return valido;
-   }
+        return !idsExistentes.contains(nuevoId);
+    }
 }
