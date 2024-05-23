@@ -9,21 +9,31 @@ import java.util.Date;
 
 public class PatitasALaCasa {
 
-    
+    private Adoptante adoptan;
+    private Mascota mascota;
     ArrayList <Mascota> mascotas = new ArrayList <Mascota>();
     ArrayList <Mascota> mascotasAdoptadas = new ArrayList <Mascota>();
     ArrayList <Mascota> fechaLlegada = new ArrayList <Mascota>();
     ArrayList <Mascota> fechaAdopcion = new ArrayList <Mascota>();
     ArrayList <Adoptante> adoptante = new ArrayList <Adoptante>();
-    ArrayList <Mascota> adoptante_Mascota = new ArrayList <Mascota>();
+    ArrayList <PatitasALaCasa> adoptante_Mascota = new ArrayList <PatitasALaCasa>();
     ArrayList <Administrador> administrador = new ArrayList <Administrador>();
     ArrayList<Integer> idsPersonas = new ArrayList<>();
     ArrayList<Integer> idsMascotas = new ArrayList<>();
     InOut oe=new InOut();
     Validaciones v=new Validaciones();
     
-    public PatitasALaCasa(){
-        
+    public PatitasALaCasa(Adoptante adoptan, Mascota mascota){
+        this.adoptan = adoptan;
+        this.mascota = mascota;
+    }
+    
+    public Adoptante getAdoptan() {
+        return adoptan;
+    }
+
+    public Mascota getMascota() {
+        return mascota;
     }
     
     public void crearAdmin(){
@@ -76,7 +86,7 @@ public class PatitasALaCasa {
             }while(!v.evaluarNombre(nom));
             
             do{
-                esp=oe.pedirString("Ingrese el tipo de especie");
+                esp=oe.pedirString("Ingrese el tipo de especie (perro o gato)");
             }while(!v.evaluarNombre(esp));
             
             do{
@@ -165,26 +175,69 @@ public class PatitasALaCasa {
     }
     
     public void adoptarMascota(){
-        int masc_adop;
-        do{
-            masc_adop = oe.pedirEntero("Ingrese el ID de la mascota que quiere adoptar");
-        }while (!v.evaluarId(masc_adop));
+        int adopt=0;
+        int masc_adop=0;
+        int res=0;
+        PatitasALaCasa adopMasc;
+        
+        res = oe.pedirEntero("Adoptar Mascota \n 1. Adoptar una mascota \n Otro para salir");
+        while(res==1){
+            do{
+                adopt = oe.pedirEntero("Ingrese la cedula del adoptante");
+            }while(!v.evaluarCedula(adopt));
 
-        Mascota mascotaAdoptar = null;
-        for(Mascota mascota : mascotas){
-            if(masc_adop == mascota.getId()){
-                mascotaAdoptar = mascota;
-                break;
+            Adoptante perAdop = null;
+            for(Adoptante adoptan:adoptante){
+                if(adopt == adoptan.getCedula()){
+                    perAdop = adoptan;
+                    break;
+                }
             }
-        }
 
-        if(mascotaAdoptar != null) {
-            mascotas.remove(mascotaAdoptar);
-            adoptante_Mascota.add(mascotaAdoptar);
-            oe.mostraDatos("La mascota ha sido adoptada");
-        } 
-        else{
-            oe.mostraDatos("No se encontró una mascota con el ID proporcionado.");
+            if(perAdop != null){
+               oe.mostraDatos("Adoptante encontrado");
+            }
+            else{
+                oe.mostraDatos("No se encontro un adoptante con ese numero de cedula");
+                continue;
+            }
+
+            do{
+                masc_adop = oe.pedirEntero("Ingrese el ID de la mascota que quiere adoptar");
+            }while (!v.evaluarId(masc_adop));
+
+            Mascota mascotaAdoptar = null;
+            for(Mascota mascota : mascotas){
+                if(masc_adop == mascota.getId()){
+                    mascotaAdoptar = mascota;
+                    break;
+                }
+            }
+
+            if(mascotaAdoptar != null) {
+                mascotas.remove(mascotaAdoptar);
+                oe.mostraDatos("La mascota ha sido adoptada");
+            } 
+            else{
+                oe.mostraDatos("No se encontró una mascota con el ID proporcionado.");
+                continue;
+            }
+            
+            adopMasc = new PatitasALaCasa(perAdop,mascotaAdoptar);
+            adoptante_Mascota.add(adopMasc);
+            oe.mostraDatos("Adoptante y mascota guardados en el registro de adopciones.");
+            
+            res = oe.pedirEntero("Adoptar Mascota \n 1. Adoptar una mascota \n Otro para salir");
+        }
+    }
+    
+    public void mostrarAdopciones(){
+        int i=1;
+        oe.mostraDatos("El/Los adoptante(s) y su(s) mascota(s) es/son");
+        for(PatitasALaCasa adoptar:adoptante_Mascota){
+            oe.mostraDatos("Adopcion "+ i++);
+            oe.mostraDatos("Adoptante: \n Nombre: "+adoptar.getAdoptan().getNombre()+"\n Apellido: "+adoptar.getAdoptan().getApellido()+"\n Cedula: "+adoptar.getAdoptan().getCedula());
+            oe.mostraDatos("Mascota: \n Nombre: "+adoptar.getMascota().getNombre()+"\n Especie: "+adoptar.getMascota().getEspecie()+"\n Raza: "+adoptar.getMascota().getRaza()+"\n ID: "+adoptar.getMascota().getId());
         }
     }
     
@@ -236,17 +289,73 @@ public class PatitasALaCasa {
             oe.mostraDatos("Revisión a "+ mascota.getNombre());
                 String m2 ="Nuevo Historial Clinico\n";
                 m2+="Vacunas:\n"+mascota.getHisClinica().getVacunas();
-                m2+="Enfermedades:\n"+mascota.getHisClinica().getEnfermedades();
-                m2+="Descricion Adicional:\n"+mascota.getHisClinica().getDesAdicional();
-                m2+="total visitas:\n"+mascota.getHisClinica().getVisitasMedico();
-                m2+="Ultima Visita y revision:\n"+mascota.getHisClinica().getUltimaVisita();
+                m2+="\n Enfermedades:\n"+mascota.getHisClinica().getEnfermedades();
+                m2+="\n Descricion Adicional:\n"+mascota.getHisClinica().getDesAdicional();
+                m2+="\n total visitas:\n"+mascota.getHisClinica().getVisitasMedico();
+                m2+="\n Ultima Visita y revision:\n"+mascota.getHisClinica().getUltimaVisita();
                 oe.mostraDatos(m2);
             }else{
                 oe.mostraDatos("El id es incorrecto");
-            }
-            
+            }   
+        }
+        for (PatitasALaCasa mascotica : adoptante_Mascota) {
+            if(mascotica.getMascota().getId()==id){
+                oe.mostraDatos("Revisión a "+ mascotica.getMascota().getNombre());
+                String m ="Historial Clinico\n";
+                m+="Vacunas: \n"+mascotica.getMascota().getHisClinica().getVacunas();
+                m+="\n Enfermedades: \n"+mascotica.getMascota().getHisClinica().getEnfermedades();
+                m+="\n Descricion Adicional:\n"+mascotica.getMascota().getHisClinica().getDesAdicional();
+                m+="\n total visitas:\n"+mascotica.getMascota().getHisClinica().getVisitasMedico();
+                m+="\n Ultima Visita y revision:\n"+mascotica.getMascota().getHisClinica().getUltimaVisita();
+                oe.mostraDatos(m);
+                
+                int opc;
+                do{
+                    String n = "Informacion que va a editar\n";
+                    n+="1. Vacunas\n";
+                    n+="2. Enfermedades\n";
+                    n+="3. Descripcion Adicional\n";
+                    n+="4. terminar revision\n";
+                    opc = oe.pedirEntero("Informacion que va a editar");
+                    int opc2=0;
+                    String aux="";
+                    switch(opc){
+                        case 1:                    
+                            aux = oe.pedirString("Nueva vacuna");
+                            mascotica.getMascota().getHisClinica().setVacunas(mascotica.getMascota().getHisClinica().getVacunas()+"\n"+aux);
+                            
+                        break;
+                        case 2:
+                            aux = oe.pedirString("Agregar nueva Enfermedad");
+                            mascotica.getMascota().getHisClinica().setEnfermedades(mascotica.getMascota().getHisClinica().getEnfermedades()+"\n"+aux);
+                        break;
+                        case 3:
+                            aux = oe.pedirDate("Nueva descripcion adicional");
+                            mascotica.getMascota().getHisClinica().setDesAdicional(aux);
+                            
+                        break;
+                        case 4:
+                            oe.mostraDatos("Saliendo");
+                        break;
+                    }
+                }while(opc!=4);
+             LocalDate fechaActual = LocalDate.now();
+             mascotica.getMascota().getHisClinica().setUltimaVisita(fechaActual);
+             mascotica.getMascota().getHisClinica().setVisitasMedico(mascotica.getMascota().getHisClinica().getVisitasMedico()+1);
+            oe.mostraDatos("Revisión a "+ mascotica.getMascota().getNombre());
+                String m2 ="Nuevo Historial Clinico\n";
+                m2+="Vacunas:\n"+mascotica.getMascota().getHisClinica().getVacunas();
+                m2+="\n Enfermedades:\n"+mascotica.getMascota().getHisClinica().getEnfermedades();
+                m2+="\n Descricion Adicional:\n"+mascotica.getMascota().getHisClinica().getDesAdicional();
+                m2+="\n total visitas:\n"+mascotica.getMascota().getHisClinica().getVisitasMedico();
+                m2+="\n Ultima Visita y revision:\n"+mascotica.getMascota().getHisClinica().getUltimaVisita();
+                oe.mostraDatos(m2);
+            }else{
+                oe.mostraDatos("El id es incorrecto");
+            }   
         }
     }
+    
     public void verMasc(){
         
         oe.mostraDatos("Las mascotas en lista de adopcion son");

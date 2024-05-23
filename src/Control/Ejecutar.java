@@ -1,8 +1,11 @@
 package Control;
 
+import Modelo.Adoptante;
+import Modelo.Mascota;
 import Vista.InOut;
 import Modelo.PatitasALaCasa;
 import Modelo.Test;
+import java.time.LocalDate;
 
 public class Ejecutar {
 // atributos
@@ -11,7 +14,12 @@ public class Ejecutar {
     static Test test;
     
     public static void main(String[] args){
-        patitas = new PatitasALaCasa();
+        int cedula=0,edad=0,numero=0,salario=0,id=0;
+        String nombre="",apellido="",correo="",especie="",raza="";
+        LocalDate Fllegada = null;
+        Adoptante adoptan = new Adoptante(cedula,nombre,apellido,edad,correo,numero,salario);
+        Mascota mascota = new Mascota(nombre, id, Fllegada, especie, raza, edad);
+        patitas = new PatitasALaCasa(adoptan, mascota);
         test = new Test();
         devolverMenu();
     }
@@ -25,8 +33,9 @@ public class Ejecutar {
         menu+="4. Test de idoneidad \n";
         menu+="5. Ver mascotas \n";
         menu+="6. Adoptar Mascota \n";
-        menu+="7. Revision de la Mascota \n";
-        menu+="8. Salir \n";
+        menu+="7. Mostrar mascotas adoptadas \n";
+        menu+="8. Revision de la Mascota \n";
+        menu+="9. Salir \n";
         return vista.pedirEntero(menu);
     }    
    
@@ -73,6 +82,12 @@ public class Ejecutar {
             break;
             
             case 7:
+                if(adopCreado==false && testCompl==false){
+                    patitas.mostrarAdopciones();
+                }
+            break;
+            
+            case 8:
                 if(mascCreada==false){
                    int id=vista.pedirEntero("Ingrese el id de la mascota");
                     patitas.realizarRevision(id);
@@ -87,6 +102,6 @@ public class Ejecutar {
         do{
             opcion=mostrarMenu();
             ejecutarMenu(opcion);
-        }while(opcion!=8);
+        }while(opcion!=9);
     }
 }
